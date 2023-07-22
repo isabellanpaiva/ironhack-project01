@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0
+}
+
+#game-screen {
+    position: relative;
+    overflow: hidden;
+}
+
+/* how to adjust the game-screen to the middle of the screen?? */
