@@ -15,11 +15,6 @@ const Game = {
 
     keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD" },
 
-    effects: { state: "snake", state: "power" },
-
-
-    // },
-
 
     init() {
         this.setDimensions();

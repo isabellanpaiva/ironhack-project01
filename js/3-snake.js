@@ -1,12 +1,10 @@
 class Snake {
 
-    constructor(gameScreen, gameSize, keys, powerSize, powerPosition) {
+    constructor(gameScreen, gameSize, keys) {
 
         this.gameScreen = gameScreen
         this.gameSize = gameSize
         this.keys = keys
-        this.powerSize = powerSize
-        this.powerPosition = powerPosition
 
 
         this.snakeSize = {
@@ -110,21 +108,20 @@ class Snake {
 
     checkPowerCollision() {
 
-        //if (
-        //this.powerPosition
-        //this.snakePosition.top + this.snakeSize.h > this.powerPosition.top ||
-        //this.snakePosition.top < this.powerPosition.top + this.powerSize.h ||
-        //this.snakePosition.left + this.snakeSize.w > this.powerPosition.left ||
-        //this.snakePosition.left < this.powerPosition.left + this.powerSize.w
-        //) {
-        //console.log("Snake collided with power-up");
-        //console.log(`${this.snakePosition.top}`)
-        //console.log(`${this.snakePosition.left}`)
-        //console.log(`${this.snakeSize.w}`)
-        //console.log(`${this.snakeSize.h}`)
-        console.log(`${this.powerPosition}`)
+        if (
+            this.snakePosition.top + this.snakeSize.h > Game.power.powerPosition.top &&
+            this.snakePosition.top < Game.power.powerPosition.top + Game.power.powerSize.h &&
+            this.snakePosition.left + this.snakeSize.w > Game.power.powerPosition.left &&
+            this.snakePosition.left < Game.power.powerPosition.left + Game.power.powerSize.w
+        ) {
+            //console.log("Snake collided with power-up");
+            //console.log(`${this.snakePosition.top}`)
+            //console.log(`${this.snakePosition.left}`)
+            //console.log(`${this.snakeSize.w}`)
+            //console.log(`${this.snakeSize.h}`)
+            console.log("You reached the powerup")
 
+        }
     }
 }
-
 
