@@ -7,6 +7,7 @@ const Game = {
         w: window.innerWidth / 2,
         h: window.innerHeight / 1.5,
         backgroundColor: "black"
+
     },
 
     snake: undefined,
@@ -82,15 +83,9 @@ const Game = {
         this.snake.checkPowerCollision()
     },
 
-    // clearAll() {
-
-    //     if (this.gameOver) {
-
-    //     }
-    // }
-
     gameOver() {
         //console.log("game over")
         alert('GAME OVER')
     }
+
 }

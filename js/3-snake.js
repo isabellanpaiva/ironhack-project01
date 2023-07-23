@@ -48,7 +48,7 @@ class Snake {
 
     moveUp() {
         this.snakePosition.top -= this.snakeSpeed.top;
-        this.updatePosition();
+        this.updateSnakePosition();
         requestAnimationFrame(() => this.moveUp()); //continuous movement link 
     }
 
@@ -57,7 +57,7 @@ class Snake {
 
         //console.log("you pressed down");
         this.snakePosition.top += this.snakeSpeed.top
-        this.updatePosition()
+        this.updateSnakePosition()
         requestAnimationFrame(() => this.moveDown()); //continuous movement link
 
     }
@@ -66,7 +66,7 @@ class Snake {
 
         //console.log("you pressed left");
         this.snakePosition.left -= this.snakeSpeed.left
-        this.updatePosition()
+        this.updateSnakePosition()
         requestAnimationFrame(() => this.moveLeft()); //continuous movement link
 
 
@@ -76,12 +76,12 @@ class Snake {
 
         //console.log("you pressed right")
         this.snakePosition.left += this.snakeSpeed.left
-        this.updatePosition()
+        this.updateSnakePosition()
         requestAnimationFrame(() => this.moveRight()); //continuous movement link
 
     }
 
-    updatePosition() {
+    updateSnakePosition() {
         this.snakeElement.style.left = `${this.snakePosition.left}px`
         this.snakeElement.style.top = `${this.snakePosition.top}px`
     }
@@ -114,14 +114,16 @@ class Snake {
             this.snakePosition.left + this.snakeSize.w > Game.power.powerPosition.left &&
             this.snakePosition.left < Game.power.powerPosition.left + Game.power.powerSize.w
         ) {
-            //console.log("Snake collided with power-up");
-            //console.log(`${this.snakePosition.top}`)
-            //console.log(`${this.snakePosition.left}`)
-            //console.log(`${this.snakeSize.w}`)
-            //console.log(`${this.snakeSize.h}`)
-            console.log("You reached the powerup")
+
+            //console.log("You reached the powerup") // CHANGE POWER TO RANDOM STUFF + +1 SCORE COUNTER
+
+            //console.log(Game.power.generateRandomPowerPosition())
+            Game.power.generateRandomPowerPosition()
 
         }
+
+
     }
+
 }
 
