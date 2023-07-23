@@ -6,21 +6,18 @@ class Power {
         this.gameSize = gameSize
 
         this.powerSize = {
-            w: 35,
-            h: 35
+            w: 15,
+            h: 15
         }
 
         this.powerPosition = {
-            left: 100,
-            top: 100
+            left: Math.floor(Math.random() * (this.gameSize.w - this.powerSize.w)),
+            top: Math.floor(Math.random() * (this.gameSize.h - this.powerSize.h))
         }
 
         this.init()
 
     }
-
-    // [QUESTION: CAN WE REPLACE LEFT AND TOP PROPERTIES FOR HORIZONTAL AND VERTICAL?]
-
 
     init() {
 
@@ -31,7 +28,7 @@ class Power {
         this.powerElement.style.height = `${this.powerSize.h}px`
         this.powerElement.style.left = `${this.powerPosition.left}px`
         this.powerElement.style.top = `${this.powerPosition.top}px`
-        this.powerElement.style.backgroundColor = "green"
+        this.powerElement.style.backgroundColor = "yellow"
 
         this.gameScreen.appendChild(this.powerElement)
 

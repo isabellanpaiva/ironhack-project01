@@ -8,13 +8,17 @@ class Snake {
 
 
         this.snakeSize = {
-            w: 35,
-            h: 35
+            w: 25,
+            h: 25
         }
 
         this.snakePosition = {
-            left: (gameSize.w - this.snakeSize.w) / 2,
-            top: (gameSize.h - this.snakeSize.h) / 2
+
+            //   left: (gameSize.w - this.snakeSize.w) / 2,
+            //   top: (gameSize.h - this.snakeSize.h) / 2
+
+            left: Math.floor(Math.random() * (this.gameSize.w - this.snakeSize.w)),
+            top: Math.floor(Math.random() * (this.gameSize.h - this.snakeSize.h))
         }
 
         this.snakeSpeed = {
@@ -27,8 +31,6 @@ class Snake {
         this.init()
 
     }
-
-    // [QUESTION: CAN WE REPLACE LEFT AND TOP PROPERTIES FOR HORIZONTAL AND VERTICAL?]
 
 
     init() {

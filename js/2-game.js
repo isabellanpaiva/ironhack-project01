@@ -7,8 +7,8 @@ const Game = {
 
     gameScreen: document.querySelector("#game-screen"),
     gameSize: {
-        w: window.innerWidth / 2,
-        h: window.innerHeight / 1.5,
+        w: window.innerWidth,
+        h: window.innerHeight,
         backgroundColor: "black"
 
     },
@@ -22,6 +22,8 @@ const Game = {
     power: undefined,
 
     obstacle: undefined,
+
+    cookie: undefined,
 
     counter: 0,
 
@@ -79,24 +81,18 @@ const Game = {
     keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD" },
 
     setEventListeners() {
-
         document.onkeydown = event => {
-
             switch (event.code) {
-
                 case this.keys.UP:
                     this.snake.moveUp()
                     //console.log("you pressed up");
                     break;
-
                 case this.keys.DOWN:
                     this.snake.moveDown()
                     break;
-
                 case this.keys.LEFT:
                     this.snake.moveLeft()
                     break;
-
                 case this.keys.RIGHT:
                     this.snake.moveRight()
                     break;
@@ -218,13 +214,20 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 2) {  // UPDATE TO 5 ON FINAL VERSION 
+        if (this.counter === 2) {  // UPDATE TO 5 ON FINAL VERSION
 
             console.log("you acchieved level 2")
 
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize)
 
             this.generateRandomObstaclePosition()
+
+        } else if (this.counter === 4) {
+
+            console.log("you acchieved level 3")
+
+            this.cookie = new Cookie(this.gameScreen, this.gameSize)
+
         }
 
     },
@@ -238,31 +241,51 @@ const Game = {
 
         setTimeout(() => {
 
-            console.log("new obstacle")
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 1000); // Add a 1-second delay
-
-        setTimeout(() => {
-
-            console.log("new obstacle")
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 2000);
-
-        setTimeout(() => {
-
-            console.log("new obstacle")
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
         }, 3000);
 
         setTimeout(() => {
 
-            console.log("new obstacle")
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
-        }, 4000);
+        }, 6000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 9000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 12000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 15000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 18000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 21000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 24000);
 
         //}
     }
