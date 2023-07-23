@@ -17,8 +17,6 @@ class Power {
 
         this.init()
 
-        this.powerCounter = 0
-
     }
 
     // [QUESTION: CAN WE REPLACE LEFT AND TOP PROPERTIES FOR HORIZONTAL AND VERTICAL?]
@@ -36,32 +34,6 @@ class Power {
         this.powerElement.style.backgroundColor = "green"
 
         this.gameScreen.appendChild(this.powerElement)
-
-    }
-
-    generateRandomPowerPosition() {
-
-        const maxLeft = this.gameSize.w - this.powerSize.w;
-        const maxTop = this.gameSize.h - this.powerSize.h;
-
-        this.powerPosition.left = Math.floor(Math.random() * maxLeft);
-        this.powerPosition.top = Math.floor(Math.random() * maxTop);
-
-        this.updatePowerPosition()
-
-        this.increasePowerCounter()
-
-    }
-
-    updatePowerPosition() {
-        this.powerElement.style.left = `${this.powerPosition.left}px`
-        this.powerElement.style.top = `${this.powerPosition.top}px`
-    }
-
-    increasePowerCounter() {
-
-        this.powerCounter++
-        console.log(this.powerCounter)
 
     }
 

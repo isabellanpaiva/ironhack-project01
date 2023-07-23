@@ -86,44 +86,5 @@ class Snake {
         this.snakeElement.style.top = `${this.snakePosition.top}px`
     }
 
-
-    checkBorderCollision() {
-
-        if (
-            this.snakePosition.top > this.gameSize.h - this.snakeSize.h ||
-            this.snakePosition.top < 0
-        ) {
-            //.console.log("you reached top border")
-            Game.gameOver()
-        }
-
-        if (
-            this.snakePosition.left >= this.gameSize.w - this.snakeSize.w ||
-            this.snakePosition.left < 0
-        ) {
-            //console.log("you reached left border")
-            Game.gameOver()
-        }
-    }
-
-    checkPowerCollision() {
-
-        if (
-            this.snakePosition.top + this.snakeSize.h > Game.power.powerPosition.top &&
-            this.snakePosition.top < Game.power.powerPosition.top + Game.power.powerSize.h &&
-            this.snakePosition.left + this.snakeSize.w > Game.power.powerPosition.left &&
-            this.snakePosition.left < Game.power.powerPosition.left + Game.power.powerSize.w
-        ) {
-
-            //console.log("You reached the powerup") // CHANGE POWER TO RANDOM STUFF + +1 SCORE COUNTER
-
-            //console.log(Game.power.generateRandomPowerPosition())
-            Game.power.generateRandomPowerPosition()
-
-        }
-
-
-    }
-
 }
 
