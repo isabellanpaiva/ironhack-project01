@@ -1,9 +1,10 @@
 class Obstacle {
 
-    constructor(gameScreen, gameSize) {
+    constructor(gameScreen, gameSize, obstacle) {
 
         this.gameScreen = gameScreen
         this.gameSize = gameSize
+        this.obstacle = obstacle
 
         this.obstacleSize = {
             w: 75,
@@ -35,7 +36,5 @@ class Obstacle {
         this.gameScreen.appendChild(this.obstacleElement)
 
     }
-
-
 
 }

@@ -21,7 +21,7 @@ const Game = {
 
     power: undefined,
 
-    obstacle: undefined,
+    obstacle: [],
 
     cookie: [],
 
@@ -62,17 +62,22 @@ const Game = {
     gameLoop() {
 
         this.drawAll()
-        //this.clearAll()
+        this.clearAll()
         window.requestAnimationFrame(() => this.gameLoop())
     },
 
     drawAll() {
         //console.log("test draw")
+        this.snake.updateSnakePosition()
         this.checkBorderCollision()
         this.checkPowerCollision()
         this.checkObstacleCollision()
         this.checkCookieCollision()
         //this.generateRandomObstaclePosition()
+    },
+
+    clearAll() {
+
     },
 
     // ---------- [INIT SETUP] ----------
@@ -82,21 +87,27 @@ const Game = {
     keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD" },
 
     setEventListeners() {
+
         document.onkeydown = event => {
+
             switch (event.code) {
                 case this.keys.UP:
                     this.snake.moveUp()
                     //console.log("you pressed up");
                     break;
+
                 case this.keys.DOWN:
                     this.snake.moveDown()
                     break;
+
                 case this.keys.LEFT:
                     this.snake.moveLeft()
                     break;
+
                 case this.keys.RIGHT:
                     this.snake.moveRight()
                     break;
+
             }
         }
     },
@@ -117,6 +128,24 @@ const Game = {
     gameOver() {
         //console.log("game over")
         alert('GAME OVER')
+        this.resetGame()
+    },
+
+    resetGame() {
+
+        this.counter = 0
+
+        this.snake = new Snake(this.gameScreen, this.gameSize);
+        this.power = new Power(this.gameScreen, this.gameSize);
+        this.obstacle = [];
+        this.cookie = []
+
+        this.gameScreen.innerHTML = '';
+
+        this.init()
+
+        console.log(this.counter)
+
     },
 
     // ---------- [GAME OVER INTERACTIONS] ----------
@@ -163,18 +192,22 @@ const Game = {
 
         if (this.obstacle) {
 
-            if (
-                this.snake.snakePosition.top + this.snake.snakeSize.h > this.obstacle.obstaclePosition.top &&
-                this.snake.snakePosition.top < this.obstacle.obstaclePosition.top + this.obstacle.obstacleSize.h &&
-                this.snake.snakePosition.left + this.snake.snakeSize.w > this.obstacle.obstaclePosition.left &&
-                this.snake.snakePosition.left < this.obstacle.obstaclePosition.left + this.obstacle.obstacleSize.w
-            ) {
+            this.obstacle.forEach(eachObstacle => {
 
-                this.gameOver()
+                if (
+                    this.snake.snakePosition.top + this.snake.snakeSize.h > eachObstacle.obstaclePosition.top &&
+                    this.snake.snakePosition.top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                    this.snake.snakePosition.left + this.snake.snakeSize.w > eachObstacle.obstaclePosition.left &&
+                    this.snake.snakePosition.left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w
+                ) {
 
-            }
+                    this.gameOver()
+
+                }
+            })
         }
     },
+
 
     checkCookieCollision() {
 
@@ -243,7 +276,7 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {  // UPDATE TO 5 ON FINAL VERSION
+        if (this.counter === 3) {  // UPDATE TO 5 ON FINAL VERSION
 
             console.log("you acchieved level 2")
 
@@ -251,7 +284,7 @@ const Game = {
 
             this.generateRandomObstaclePosition()
 
-        } else if (this.counter === 2) {
+        } else if (this.counter === 6) {
 
             console.log("you acchieved level 3")
 
@@ -260,68 +293,51 @@ const Game = {
         }
 
     },
+
     // ---------- [LEVEL UP INTERACTIONS] ---------- 
 
     // ---------- [LEVEL 2 INTERACTIONS] ---------- 
 
     generateRandomObstaclePosition() {
 
-        //if (this.counter === 3) { // UPDATE TO 5 AND 10 ON FINAL VERSION 
+        this.obstacle = [];
 
-        setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
 
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+            let obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
-        }, 1000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 2000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 3000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 4000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 5000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 6000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 7000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 8000);
-
-
+            this.obstacle.push(obstacle);
+            this.checkObstacleOverlap()
+        }
     },
+
+
+    checkObstacleOverlap() {
+
+        if (this.obstacle) {
+
+            this.obstacle.filter((eachObstacle) => {
+
+                if (
+                    this.snake.snakePosition.top + this.snake.snakeSize.h > eachObstacle.obstaclePosition.top &&
+                    this.snake.snakePosition.top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                    this.snake.snakePosition.left + this.snake.snakeSize.w > eachObstacle.obstaclePosition.left &&
+                    this.snake.snakePosition.left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w
+
+                ) {
+
+                    console.log("true");
+                    this.obstacle.splice(obstacle);
+                }
+            });
+        }
+    },
+
+
 
     generateRandomCookiePosition() {
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 10; i++) {
 
             const cookies = new Cookie(this.gameScreen, this.gameSize);
 
@@ -329,7 +345,7 @@ const Game = {
 
         }
 
-    },
+    }
 
 }
 
