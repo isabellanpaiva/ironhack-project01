@@ -27,7 +27,6 @@ class Snake {
         }
 
 
-
         this.init()
 
     }
