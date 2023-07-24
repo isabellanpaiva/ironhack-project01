@@ -23,7 +23,7 @@ const Game = {
 
     obstacle: undefined,
 
-    cookie: undefined,
+    cookie: [],
 
     counter: 0,
 
@@ -71,6 +71,7 @@ const Game = {
         this.checkBorderCollision()
         this.checkPowerCollision()
         this.checkObstacleCollision()
+        this.checkCookieCollision()
         //this.generateRandomObstaclePosition()
     },
 
@@ -175,6 +176,34 @@ const Game = {
         }
     },
 
+    checkCookieCollision() {
+
+        if (this.cookie) {
+
+            this.cookie.forEach((eachCookie, index) => {
+
+                if (
+                    this.snake.snakePosition.top + this.snake.snakeSize.h > eachCookie.cookiePosition.top &&
+                    this.snake.snakePosition.top < eachCookie.cookiePosition.top + eachCookie.cookieSize.h &&
+                    this.snake.snakePosition.left + this.snake.snakeSize.w > eachCookie.cookiePosition.left &&
+                    this.snake.snakePosition.left < eachCookie.cookiePosition.left + eachCookie.cookieSize.w
+                ) {
+
+                    //console.log("you eat a cookie")
+
+                    this.cookie.splice(index, 1);
+                    eachCookie.cookieElement.remove()
+
+                    this.snake.getBigger()
+
+                }
+
+            })
+
+        }
+
+    },
+
     // ---------- [COLLISION INTERACTIONS] ----------
 
 
@@ -214,7 +243,7 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 2) {  // UPDATE TO 5 ON FINAL VERSION
+        if (this.counter === 1) {  // UPDATE TO 5 ON FINAL VERSION
 
             console.log("you acchieved level 2")
 
@@ -222,11 +251,11 @@ const Game = {
 
             this.generateRandomObstaclePosition()
 
-        } else if (this.counter === 4) {
+        } else if (this.counter === 2) {
 
             console.log("you acchieved level 3")
 
-            this.cookie = new Cookie(this.gameScreen, this.gameSize)
+            this.generateRandomCookiePosition()
 
         }
 
@@ -243,7 +272,31 @@ const Game = {
 
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
+        }, 1000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 2000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
         }, 3000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 4000);
+
+        setTimeout(() => {
+
+            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+
+        }, 5000);
 
         setTimeout(() => {
 
@@ -255,41 +308,28 @@ const Game = {
 
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
-        }, 9000);
+        }, 7000);
 
         setTimeout(() => {
 
             this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
-        }, 12000);
+        }, 8000);
 
-        setTimeout(() => {
 
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+    },
 
-        }, 15000);
+    generateRandomCookiePosition() {
 
-        setTimeout(() => {
+        for (let i = 0; i < 3; i++) {
 
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
+            const cookies = new Cookie(this.gameScreen, this.gameSize);
 
-        }, 18000);
+            this.cookie.push(cookies);
 
-        setTimeout(() => {
+        }
 
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 21000);
-
-        setTimeout(() => {
-
-            this.obstacle = new Obstacle(this.gameScreen, this.gameSize);
-
-        }, 24000);
-
-        //}
-    }
-
+    },
 
 }
 

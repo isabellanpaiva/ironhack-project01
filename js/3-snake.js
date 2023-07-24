@@ -88,5 +88,20 @@ class Snake {
         this.snakeElement.style.top = `${this.snakePosition.top}px`
     }
 
+    getBigger() {
+
+        //console.log("snake got bigger")
+        //return
+        this.snakeSize.w += 10
+        this.snakeSize.h += 10
+        this.updateSnakeSize()
+
+    }
+
+    updateSnakeSize() {
+        this.snakeElement.style.width = `${this.snakeSize.w}px`
+        this.snakeElement.style.height = `${this.snakeSize.h}px`
+    }
+
 }
 
