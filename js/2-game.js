@@ -130,25 +130,41 @@ const Game = {
 
     // ---------- [GAME OVER SETUP] ----------
 
-    gameOver() {
-
-        //console.log("game over")
-
-        //this.gameOverMessage()
-
-        alert('GAME OVER')
-
-        this.resetGame()
-    },
-
     // ---------- [GAME OVER SETUP] ----------
 
-    // gameOverMessage() {
+    gameOverMessage() {
 
-    //     this.message = new Message(this.gameScreen, this.gameSize)
+        this.message = new Message(this.gameScreen, this.gameSize)
 
-    //     this.message.messageElement.innerText = "Maybe next time..."
+        if (this.counter <= 2) {
 
+            this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> Maybe next time :( </p>`
+
+        } else if (this.counter > 2) {
+
+            this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> Not too bad :) </p>`
+
+        }
+
+        setTimeout(() => {
+            window.onload
+        }, 300);
+
+    },
+
+    // gameOver() {
+
+    //     //console.log("game over")
+
+    //     alert('RETRY')
+
+    //     setTimeout(() => {
+
+    //         window.onload
+
+    //     }, 500);
+
+    //     //this.resetGame() 
 
     // },
 
@@ -156,18 +172,19 @@ const Game = {
 
     resetGame() {
 
-        this.counter = 0
 
-        this.snake = new Snake(this.gameScreen, this.gameSize);
-        this.power = new Power(this.gameScreen, this.gameSize);
-        this.obstacleList = [];
-        this.cookieList = []
+        //this.counter = 0
 
-        this.gameScreen.innerHTML = '';
+        // this.snake = new Snake(this.gameScreen, this.gameSize);
+        // this.power = new Power(this.gameScreen, this.gameSize);
+        // this.obstacleList = [];
+        // this.cookieList = []
 
-        this.init()
+        // this.gameScreen.innerHTML = '';
 
-        console.log(this.counter)
+        // this.init()
+
+        // console.log(this.counter)
 
     },
 
@@ -199,7 +216,7 @@ const Game = {
             this.snake.snakePosition.top < 0
         ) {
             //.console.log("you reached top border")
-            this.gameOver()
+            this.gameOverMessage()
         }
 
         if (
@@ -207,7 +224,7 @@ const Game = {
             this.snake.snakePosition.left < 0
         ) {
             //console.log("you reached left border")
-            this.gameOver()
+            this.gameOverMessage()
         }
     },
 
@@ -240,7 +257,7 @@ const Game = {
                     this.snake.snakePosition.left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w
                 ) {
 
-                    this.gameOver()
+                    this.gameOverMessage()
 
                 }
             })
@@ -407,11 +424,12 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {
+        if (this.counter === 3) {
 
             this.level2()
 
-        } else if (this.counter === 2) {
+        } else if (this.counter === 6) {
+
 
             this.level3()
 
