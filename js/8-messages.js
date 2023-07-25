@@ -5,14 +5,14 @@ class Message {
         this.gameScreen = gameScreen
         this.gameSize = gameSize
 
-        this.messagesSize = {
-            w: 500,
-            h: 250
+        this.messageSize = {
+            w: 450,
+            h: 200
         }
 
-        this.messagesPosition = {
-            left: (gameSize.w - this.messagesSize.w) / 2,
-            top: (gameSize.h - this.messagesSize.h) / 2
+        this.messagePosition = {
+            left: (gameSize.w - this.messageSize.w) / 2,
+            top: (gameSize.h - this.messageSize.h) / 2
         }
 
         this.init()
@@ -21,16 +21,46 @@ class Message {
 
     init() {
 
-        this.messagesElement = document.createElement('div')
+        this.messageElement = document.createElement('div')
 
-        this.messagesElement.style.position = "absolute"
-        this.messagesElement.style.width = `${this.messagesSize.w}px`
-        this.messagesElement.style.height = `${this.messagesSize.h}px`
-        this.messagesElement.style.left = `${this.messagesPosition.left}px`
-        this.messagesElement.style.top = `${this.messagesPosition.top}px`
-        this.messagesElement.style.backgroundColor = "lightgray"
+        this.messageElement.style.position = "absolute"
+        this.messageElement.style.width = `${this.messageSize.w}px`
+        this.messageElement.style.height = `${this.messageSize.h}px`
+        this.messageElement.style.left = `${this.messagePosition.left}px`
+        this.messageElement.style.top = `${this.messagePosition.top}px`
+        this.messageElement.style.backgroundColor = "darkgray"
+        this.messageElement.style.border = "15px solid red"
+        this.messageElement.style.borderColor = "grey"
 
-        this.gameScreen.appendChild(this.messagesElement)
+        this.messageElement.style.color = "white"
+        this.messageElement.style.fontSize = "24px";
+        this.messageElement.style.fontFamily = "Arial";
+        this.messageElement.style.textAlign = "center";
+        this.messageElement.style.padding = "25px";
+        //this.fontFamily = 'ArcadeFont', sans - FileSystemWritableFileStream;
+
+        this.messageElement.innerHTML = `
+
+          <h1> 
+          Kind of snake </h1>
+
+          <br>
+
+          <h2 style = "font-size: 20px">  
+         Inspired on original Snake game (almost) </h2>
+
+          <br> 
+
+          <h3 style = "font-size: 15px">
+         Developed by Irene Buz and Isabella Paiva </h3> 
+
+           <br>
+
+          <p style = "font-size: 20px"> 
+          Press space to continue</p>`
+
+
+        this.gameScreen.appendChild(this.messageElement)
 
     }
 

@@ -67,7 +67,7 @@ const Game = {
     createElement() {
         this.snake = new Snake(this.gameScreen, this.gameSize)
         this.power = new Power(this.gameScreen, this.gameSize)
-        //this.message = new Message(this.gameScreen, this.gameSize)
+        this.message = new Message(this.gameScreen, this.gameSize)
     },
 
     gameLoop() {
@@ -94,7 +94,7 @@ const Game = {
 
     // ---------- [KEYBOARD SETUP] ----------
 
-    keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD" },
+    keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD", SPACE: "Space" },
 
     setEventListeners() {
 
@@ -117,28 +117,42 @@ const Game = {
                     this.snake.moveRight()
                     break;
 
+                case this.keys.SPACE:
+                    console.log("you pressed space")
+                    this.removeMessage()
+                    break;
+
             }
         }
     },
 
     // ---------- [KEYBOARD SETUP] ----------
 
-    // ---------------------------- [SETUP] ----------------------------
-
-
-
-
-    // ---------------------------- [INTERACTIONS] ----------------------------
-
-
-    // ---------- [GAME OVER INTERACTIONS] ----------
+    // ---------- [GAME OVER SETUP] ----------
 
     gameOver() {
+
         //console.log("game over")
 
+        //this.gameOverMessage()
+
         alert('GAME OVER')
+
         this.resetGame()
     },
+
+    // ---------- [GAME OVER SETUP] ----------
+
+    // gameOverMessage() {
+
+    //     this.message = new Message(this.gameScreen, this.gameSize)
+
+    //     this.message.messageElement.innerText = "Maybe next time..."
+
+
+    // },
+
+    // ---------- [RESET SETUP] ----------
 
     resetGame() {
 
@@ -157,7 +171,23 @@ const Game = {
 
     },
 
-    // ---------- [GAME OVER INTERACTIONS] ----------
+    // ---------- [RESET SETUP] ----------
+
+    // ---------- [MESSAGES SETUP] ----------
+
+
+    removeMessage() {
+
+        this.message.messageElement.remove()
+    },
+
+
+    // ---------- [MESSAGES SETUP] ----------
+
+    // ---------------------------- [SETUP] ----------------------------
+
+
+    // ---------------------------- [INTERACTIONS] ----------------------------
 
 
     // ---------- [COLLISION INTERACTIONS] ---------- 
@@ -330,69 +360,6 @@ const Game = {
 
     // ---------- [LEVEL 1 INTERACTIONS] ---------- 
 
-    // ---------- [LEVEL UP INTERACTIONS] ----------
-
-    increaseLevel() {
-
-        if (this.counter === 1) {
-
-            this.level2()
-
-        } else if (this.counter === 2) {
-
-            this.level3()
-
-        }
-
-    },
-
-    level2() {
-
-        console.log("you acchieved level 2")
-
-        this.snake.snakePosition = {
-
-            left: 20,
-            top: 20
-
-        }
-
-        this.generateRandomObstaclePosition()
-
-        this.stopMovement()
-
-    },
-
-    level3() {
-
-        console.log("you acchieved level 3")
-
-        this.snake.snakePosition = {
-
-            left: 20,
-            top: 20
-
-        }
-
-        this.generateRandomCookiePosition()
-
-        this.stopMovement()
-
-    },
-
-    stopMovement() {
-
-        console.log("movement stopped")
-
-        this.snake.snakeSpeed = {
-            left: 0,
-            top: 0
-        }
-
-    },
-
-    // ---------- [LEVEL UP INTERACTIONS] ---------- 
-
     // ---------- [LEVEL 2 INTERACTIONS] ---------- 
 
     generateRandomObstaclePosition() {
@@ -434,6 +401,90 @@ const Game = {
 
     },
 
+    // ---------- [LEVEL 3 INTERACTIONS] ---------- 
+
+    // ---------- [LEVEL UP INTERACTIONS] ----------
+
+    increaseLevel() {
+
+        if (this.counter === 1) {
+
+            this.level2()
+
+        } else if (this.counter === 2) {
+
+            this.level3()
+
+        }
+
+    },
+
+    level2() {
+
+        console.log("you acchieved level 2")
+
+        this.snake.snakePosition = {
+
+            left: 20,
+            top: 20
+
+        }
+
+        this.generateRandomObstaclePosition()
+
+        this.stopMovement()
+
+        this.level2Message()
+
+    },
+
+    level2Message() {
+
+        this.message = new Message(this.gameScreen, this.gameSize)
+
+        this.message.messageElement.innerHTML = '<br> <br> <h3> Too easy, right?</h3> <br> <br> <p style="font-size: 20px">Press space to continue</p>'
+
+
+    },
+
+    level3() {
+
+        console.log("you acchieved level 3")
+
+        this.snake.snakePosition = {
+
+            left: 20,
+            top: 20
+
+        }
+
+        this.generateRandomCookiePosition()
+
+        this.stopMovement()
+
+        this.level3Message()
+
+    },
+
+    level3Message() {
+
+        this.message = new Message(this.gameScreen, this.gameSize)
+
+        this.message.messageElement.innerHTML = '<br> <br> <h3> Nhommm... cookies</h3>  <br> <br> <p style="font-size: 20px">Press space to continue</p>'
+
+    },
+
+    stopMovement() {
+
+        console.log("movement stopped")
+
+        this.snake.snakeSpeed = {
+            left: 0,
+            top: 0
+        }
+
+    },
+
 }
 
-// ---------- [LEVEL 3 INTERACTIONS] ---------- 
+    // ---------- [LEVEL UP INTERACTIONS] ---------- 
