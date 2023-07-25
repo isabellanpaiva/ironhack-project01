@@ -13,8 +13,9 @@ class Obstacle {
 
         this.obstaclePosition = {
 
-            left: Math.floor(Math.random() * (this.gameSize.w - this.obstacleSize.w)),
-            top: Math.floor(Math.random() * (this.gameSize.h - this.obstacleSize.h))
+            left: Math.floor(Math.random() * (this.gameSize.w - (2 * this.obstacleSize.w))),
+            top: Math.floor(Math.random() * (this.gameSize.h - (2 * this.obstacleSize.h)))
+
         }
 
         this.init()

@@ -14,11 +14,11 @@ class Snake {
 
         this.snakePosition = {
 
-            //   left: (gameSize.w - this.snakeSize.w) / 2,
-            //   top: (gameSize.h - this.snakeSize.h) / 2
+            left: 20,
+            top: 20
 
-            left: Math.floor(Math.random() * (this.gameSize.w - this.snakeSize.w)),
-            top: Math.floor(Math.random() * (this.gameSize.h - this.snakeSize.h))
+            //left: Math.floor(Math.random() * (this.gameSize.w - this.snakeSize.w)),
+            //top: Math.floor(Math.random() * (this.gameSize.h - this.snakeSize.h))
         }
 
         this.snakeSpeed = {
@@ -55,7 +55,7 @@ class Snake {
 
         console.log("you pressed up")
         this.snakeSpeed.left = 0;
-        this.snakeSpeed.top = -2;
+        this.snakeSpeed.top = -3;
 
 
     }
@@ -64,7 +64,7 @@ class Snake {
 
         console.log("you pressed down")
         this.snakeSpeed.left = 0;
-        this.snakeSpeed.top = 2;
+        this.snakeSpeed.top = 3;
 
     }
 
@@ -76,7 +76,7 @@ class Snake {
 
         console.log("you pressed left")
         this.snakeSpeed.top = 0;
-        this.snakeSpeed.left = -2;
+        this.snakeSpeed.left = -3;
 
     }
 
@@ -85,7 +85,7 @@ class Snake {
         console.log("you pressed right")
 
         this.snakeSpeed.top = 0;
-        this.snakeSpeed.left = 2;
+        this.snakeSpeed.left = 3;
 
     }
 
@@ -97,58 +97,6 @@ class Snake {
     }
 
     // ---------- [HORIZONTAL CONDITIONS] ---------- 
-
-
-    // moveUp() {
-
-    //     //this.snakeSpeed.left = 0
-    //     //this.snakeSpeed.top = -1
-
-    //     this.snakePosition.top -= this.snakeSpeed.top;
-    //     this.updateSnakePosition();
-    //     requestAnimationFrame(() => this.moveUp()); //continuous movement link 
-    // }
-
-
-    // moveDown() {
-
-    //     //console.log("you pressed down");
-
-    //     //this.snakeSpeed.left = 0
-    //     //this.snakeSpeed.top = 1
-
-    //     this.snakePosition.top += this.snakeSpeed.top
-    //     this.updateSnakePosition()
-    //     requestAnimationFrame(() => this.moveDown()); //continuous movement link
-
-    // }
-
-    // moveLeft() {
-
-    //     //console.log("you pressed left");
-
-    //     //this.snakeSpeed.left = -1
-    //     //this.snakeSpeed.top = 0
-
-    //     this.snakePosition.left -= this.snakeSpeed.left
-    //     this.updateSnakePosition()
-    //     requestAnimationFrame(() => this.moveLeft()); //continuous movement link
-
-
-    // }
-
-    // moveRight() {
-
-    //     //console.log("you pressed right")
-
-    //     //this.snakeSpeed.left = 1
-    //     //this.snakeSpeed.top = 0
-
-    //     this.snakePosition.left += this.snakeSpeed.left
-    //     this.updateSnakePosition()
-    //     requestAnimationFrame(() => this.moveRight()); //continuous movement link
-
-    // }
 
 
     // ---------- [MOVEMENT CONDITIONS] ---------- 

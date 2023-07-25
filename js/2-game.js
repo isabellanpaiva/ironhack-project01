@@ -17,16 +17,19 @@ const Game = {
 
     // ---------- [OBJECTS SETUP] ----------
 
+    counter: 0,
+
+    firstStart: true,
+
     snake: undefined,
 
     power: undefined,
 
     obstacleList: [],
 
-    cookie: [],
+    cookieList: [],
 
-    counter: 0,
-
+    message: undefined,
 
     // ---------- [OBJECTS SETUP] ----------
 
@@ -36,6 +39,7 @@ const Game = {
         this.setDimensions();
         this.setBackgroundColor();
         this.setEventListeners();
+
         this.start()
     },
 
@@ -50,13 +54,20 @@ const Game = {
     },
 
     start() {
+
         this.createElement()
-        this.gameLoop()
+
+        if (this.firstStart) { //execute gameLoop only once >>> avoid speed increase
+            this.gameLoop()
+            this.firstStart = false
+        }
+
     },
 
     createElement() {
         this.snake = new Snake(this.gameScreen, this.gameSize)
         this.power = new Power(this.gameScreen, this.gameSize)
+        //this.message = new Message(this.gameScreen, this.gameSize)
     },
 
     gameLoop() {
@@ -73,7 +84,6 @@ const Game = {
         this.checkPowerCollision()
         this.checkObstacleCollision()
         this.checkCookieCollision()
-        //this.generateRandomObstaclePosition()
     },
 
     clearAll() {
@@ -93,7 +103,6 @@ const Game = {
             switch (event.code) {
                 case this.keys.UP:
                     this.snake.moveUp()
-                    //console.log("you pressed up");
                     break;
 
                 case this.keys.DOWN:
@@ -124,9 +133,9 @@ const Game = {
 
     // ---------- [GAME OVER INTERACTIONS] ----------
 
-
     gameOver() {
         //console.log("game over")
+
         alert('GAME OVER')
         this.resetGame()
     },
@@ -138,7 +147,7 @@ const Game = {
         this.snake = new Snake(this.gameScreen, this.gameSize);
         this.power = new Power(this.gameScreen, this.gameSize);
         this.obstacleList = [];
-        this.cookie = []
+        this.cookieList = []
 
         this.gameScreen.innerHTML = '';
 
@@ -211,9 +220,9 @@ const Game = {
 
     checkCookieCollision() {
 
-        if (this.cookie) {
+        if (this.cookieList) {
 
-            this.cookie.forEach((eachCookie, index) => {
+            this.cookieList.forEach((eachCookie, index) => {
 
                 if (
                     this.snake.snakePosition.top + this.snake.snakeSize.h > eachCookie.cookiePosition.top &&
@@ -224,7 +233,7 @@ const Game = {
 
                     //console.log("you eat a cookie")
 
-                    this.cookie.splice(index, 1);
+                    this.cookieList.splice(index, 1);
                     eachCookie.cookieElement.remove()
 
                     this.snake.getBigger()
@@ -238,6 +247,55 @@ const Game = {
     },
 
     // ---------- [COLLISION INTERACTIONS] ----------
+
+    // ---------- [OVERLAP INTERACTIONS] ----------
+
+    checkObstacleOverlap(left, top, w, h) {
+
+        if (this.obstacleList) {
+
+
+            let isColliding = false;
+
+            this.obstacleList.forEach(eachObstacle => {
+
+                if (
+
+                    //checks for obstacle versus obstacle
+
+                    (top + h > eachObstacle.obstaclePosition.top &&
+                        top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                        left + w > eachObstacle.obstaclePosition.left &&
+                        left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
+
+                    // //checks for obstacle versus snake 
+
+                    // || (top + h > this.snake.snakePosition.top &&
+                    //     top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                    //     left + w > this.snake.snakePosition.left &&
+                    //     left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
+
+                    ////checks for obstacle versus power up
+
+                    || (top + h > this.power.powerPosition.top &&
+                        top < this.power.powerPosition.top + this.power.powerSize.h &&
+                        left + w > this.power.powerPosition.left &&
+                        left < this.power.powerPosition.left + this.power.powerSize.w)
+
+                ) {
+
+                    isColliding = true;
+
+                }
+
+            })
+
+            return isColliding
+
+        }
+    },
+
+    // ---------- [OVERLAP INTERACTIONS] ----------
 
 
     // ---------- [LEVEL 1 INTERACTIONS] ---------- 
@@ -276,20 +334,59 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {  // UPDATE TO 5 ON FINAL VERSION
+        if (this.counter === 1) {
 
-            console.log("you acchieved level 2")
+            this.level2()
 
-            // this.obstacle = new Obstacle(this.gameScreen, this.gameSize)
+        } else if (this.counter === 2) {
 
-            this.generateRandomObstaclePosition()
+            this.level3()
 
-        } else if (this.counter === 6) {
+        }
 
-            console.log("you acchieved level 3")
+    },
 
-            this.generateRandomCookiePosition()
+    level2() {
 
+        console.log("you acchieved level 2")
+
+        this.snake.snakePosition = {
+
+            left: 20,
+            top: 20
+
+        }
+
+        this.generateRandomObstaclePosition()
+
+        this.stopMovement()
+
+    },
+
+    level3() {
+
+        console.log("you acchieved level 3")
+
+        this.snake.snakePosition = {
+
+            left: 20,
+            top: 20
+
+        }
+
+        this.generateRandomCookiePosition()
+
+        this.stopMovement()
+
+    },
+
+    stopMovement() {
+
+        console.log("movement stopped")
+
+        this.snake.snakeSpeed = {
+            left: 0,
+            top: 0
         }
 
     },
@@ -302,60 +399,41 @@ const Game = {
 
         this.obstacleList = [];
 
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 10; i++) {
 
             let obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
             const isColiding = this.checkObstacleOverlap(obstacle.obstaclePosition.left, obstacle.obstaclePosition.top, obstacle.obstacleSize.w, obstacle.obstacleSize.h)
             console.log({ isColiding })
+
             if (isColiding) {
+
                 obstacle.obstacleElement.remove()
                 i--
+
             } else {
+
                 this.obstacleList.push(obstacle);
             }
         }
     },
 
+    // ---------- [LEVEL 2 INTERACTIONS] ---------- 
 
-    checkObstacleOverlap(left, top, w, h) {
-
-        if (this.obstacleList) {
-
-
-            let isColliding = false;
-            this.obstacleList.forEach(eachObstacle => {
-
-                if (
-                    top + h > eachObstacle.obstaclePosition.top &&
-                    top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
-                    left + w > eachObstacle.obstaclePosition.left &&
-                    left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w
-                ) {
-
-                    isColliding = true;
-
-                }
-            })
-
-            return isColliding
-        }
-    },
-
-
+    // ---------- [LEVEL 3 INTERACTIONS] ---------- 
 
     generateRandomCookiePosition() {
 
         for (let i = 0; i < 10; i++) {
 
-            const cookies = new Cookie(this.gameScreen, this.gameSize);
+            const cookie = new Cookie(this.gameScreen, this.gameSize);
 
-            this.cookie.push(cookies);
+            this.cookieList.push(cookie);
 
         }
 
-    }
+    },
 
 }
 
-// ---------- [LEVEL 2 INTERACTIONS] ---------- 
+// ---------- [LEVEL 3 INTERACTIONS] ---------- 
