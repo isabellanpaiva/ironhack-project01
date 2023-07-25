@@ -6,8 +6,8 @@ class Message {
         this.gameSize = gameSize
 
         this.messageSize = {
-            w: 450,
-            h: 200
+            w: 500,
+            h: 250
         }
 
         this.messagePosition = {
@@ -41,23 +41,23 @@ class Message {
 
         this.messageElement.innerHTML = `
 
-          <h1> 
-          Kind of snake </h1>
+          <h1> Kind of snake </h1>
 
           <br>
 
-          <h2 style = "font-size: 20px">  
-         Inspired on original Snake game (almost) </h2>
+          <h3> Inspired on original Snake game (almost) </h3>
 
-          <br> 
+         <br> <br>
 
-          <h3 style = "font-size: 15px">
-         Developed by Irene Buz and Isabella Paiva </h3> 
+         <h2> Developed by 
+         
+         <br> <br>
+         
+         Irene Buz and Isabella Paiva </h2>
 
-           <br>
+           <br> <br>
 
-          <p style = "font-size: 20px"> 
-          Press space to continue</p>`
+          <p> Press space to continue</p>`
 
 
         this.gameScreen.appendChild(this.messageElement)

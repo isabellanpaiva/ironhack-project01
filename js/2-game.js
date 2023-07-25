@@ -65,9 +65,9 @@ const Game = {
     },
 
     createElement() {
+        this.message = new Message(this.gameScreen, this.gameSize)
         this.snake = new Snake(this.gameScreen, this.gameSize)
         this.power = new Power(this.gameScreen, this.gameSize)
-        this.message = new Message(this.gameScreen, this.gameSize)
     },
 
     gameLoop() {
@@ -442,7 +442,7 @@ const Game = {
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        this.message.messageElement.innerHTML = '<br> <br> <h3> Too easy, right?</h3> <br> <br> <p style="font-size: 20px">Press space to continue</p>'
+        this.message.messageElement.innerHTML = '<br> <br> <div> Too easy, right? <div> <br> <br> <p> Press space to continue</p>'
 
 
     },
@@ -470,7 +470,7 @@ const Game = {
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        this.message.messageElement.innerHTML = '<br> <br> <h3> Nhommm... cookies</h3>  <br> <br> <p style="font-size: 20px">Press space to continue</p>'
+        this.message.messageElement.innerHTML = '<br> <br>  <div> Nhommm... cookies  <div> <br> <br> <p> Press space to continue </p>'
 
     },
 
