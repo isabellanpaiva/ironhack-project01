@@ -211,7 +211,7 @@ const Game = {
 
         } else if (this.counter <= 3 && this.counter < 10) {
 
-            this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> I think you can do better </p>`
+            this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> You can do better </p>`
 
         } else {
 
@@ -481,6 +481,61 @@ const Game = {
 
 
 
+    checkPowerOverlap(left, top, w, h) {
+
+        if (this.power) {
+
+            const power = this.power
+
+            let isColliding = false;
+
+            if (
+                //checks for power versus power
+                (top + h > this.power.powerPosition.top &&
+                    top < this.power.powerPosition.top + this.power.powerSize.h &&
+                    left + w > this.power.powerPosition.left &&
+                    left < this.power.powerPosition.left + this.power.powerSize.w)
+
+                // //checks for power versus snake 
+                // || (top + h > this.snake.snakePosition.top &&
+                //     top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                //     left + w > this.snake.snakePosition.left &&
+                //     left < this.snake.snakePosition.left + this.snake.snakeSize.w)
+            ) {
+                isColliding = true;
+            }
+
+
+            //checks for power versus obstacle 
+            this.obstacleList.forEach(eachObstacle => {
+                if (
+                    (top + h > eachObstacle.obstaclePosition.top &&
+                        top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                        left + w > eachObstacle.obstaclePosition.left &&
+                        left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
+            //checks for power versus cookie 
+            this.cookieList.forEach(eachCookie => {
+                if (
+                    (top + h > eachCookie.cookiePosition.top &&
+                        top < eachCookie.cookiePosition.top + eachCookie.cookieSize.h &&
+                        left + w > eachCookie.cookiePosition.left &&
+                        left < eachCookie.cookiePosition.left + eachCookie.cookieSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
+            return isColliding;
+
+        }
+    },
+
+
     // ---------- [OVERLAP INTERACTIONS] ----------
 
 
@@ -498,15 +553,41 @@ const Game = {
 
     generateRandomPowerPosition() {
 
-        const maxLeft = this.gameSize.w - this.power.powerSize.w;
-        const maxTop = this.gameSize.h - this.power.powerSize.h;
+        // Clear the previous power, if it exists
 
-        this.power.powerPosition.left = Math.floor(Math.random() * maxLeft);
-        this.power.powerPosition.top = Math.floor(Math.random() * maxTop);
+        if (this.power && this.power.powerElement) {
+            this.power.powerElement.remove();
+        }
 
-        this.updatePowerPosition()
+        let power = new Power(this.gameScreen, this.gameSize);
 
+        const maxLeft = this.gameSize.w - power.powerSize.w;
+        const maxTop = this.gameSize.h - power.powerSize.h;
+
+        power.powerPosition.left = Math.floor(Math.random() * maxLeft);
+        power.powerPosition.top = Math.floor(Math.random() * maxTop);
+
+        const isColliding = this.checkPowerOverlap(power.powerPosition.left, power.powerPosition.top, power.powerSize.w, power.powerSize.h);
+        console.log({ isColliding });
+
+        if (isColliding) {
+
+            power.powerElement.remove()
+
+            const maxLeft = this.gameSize.w - power.powerSize.w;
+            const maxTop = this.gameSize.h - power.powerSize.h;
+
+            power.powerPosition.left = Math.floor(Math.random() * maxLeft);
+            power.powerPosition.top = Math.floor(Math.random() * maxTop);
+
+
+        } else {
+            this.power = power; // Update the power object for the game instance.
+            this.updatePowerPosition();
+        }
     },
+
+
 
     updatePowerPosition() {
         this.power.powerElement.style.left = `${this.power.powerPosition.left}px`
