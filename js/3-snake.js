@@ -55,7 +55,7 @@ class Snake {
 
         console.log("you pressed up")
         this.snakeSpeed.left = 0;
-        this.snakeSpeed.top = -3.5;
+        this.snakeSpeed.top = -4;
 
 
     }
@@ -64,7 +64,7 @@ class Snake {
 
         console.log("you pressed down")
         this.snakeSpeed.left = 0;
-        this.snakeSpeed.top = 3.5;
+        this.snakeSpeed.top = 4;
 
     }
 
@@ -76,7 +76,7 @@ class Snake {
 
         console.log("you pressed left")
         this.snakeSpeed.top = 0;
-        this.snakeSpeed.left = -3.5;
+        this.snakeSpeed.left = -4;
 
     }
 
@@ -85,7 +85,7 @@ class Snake {
         console.log("you pressed right")
 
         this.snakeSpeed.top = 0;
-        this.snakeSpeed.left = 3.5;
+        this.snakeSpeed.left = 4;
 
     }
 
