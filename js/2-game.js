@@ -360,6 +360,7 @@ const Game = {
 
     // ---------- [OVERLAP INTERACTIONS] ----------
 
+
     checkObstacleOverlap(left, top, w, h) {
 
         if (this.obstacleList) {
@@ -399,6 +400,8 @@ const Game = {
 
             })
 
+            //checks for obstacle versus cookie
+
             this.cookieList.forEach(eachCookie => {
                 if (
                     (top + h > eachCookie.cookiePosition.top &&
@@ -415,6 +418,68 @@ const Game = {
 
         }
     },
+
+
+    checkCookieOverlap(left, top, w, h) {
+
+        if (this.cookieList) {
+
+            let isColliding = false;
+
+            this.cookieList.forEach(eachCookie => {
+
+                if (
+
+                    //checks for cookie versus cookie
+
+                    (top + h > eachCookie.cookiePosition.top &&
+                        top < eachCookie.cookiePosition.top + eachCookie.cookieSize.h &&
+                        left + w > eachCookie.cookiePosition.left &&
+                        left < eachCookie.cookiePosition.left + eachCookie.cookieSize.w)
+
+                    //checks for cookie versus snake 
+
+                    || (top + h > this.snake.snakePosition.top &&
+                        top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                        left + w > this.snake.snakePosition.left &&
+                        left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
+
+                    //checks for cookie versus power up
+
+                    || (top + h > this.power.powerPosition.top &&
+                        top < this.power.powerPosition.top + this.power.powerSize.h &&
+                        left + w > this.power.powerPosition.left &&
+                        left < this.power.powerPosition.left + this.power.powerSize.w)
+
+                ) {
+
+                    isColliding = true;
+
+                }
+
+            })
+
+            //checks for cookie versus obstacle 
+
+            this.obstacleList.forEach(eachObstacle => {
+
+                if (
+                    (top + h > eachObstacle.obstaclePosition.top &&
+                        top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                        left + w > eachObstacle.obstaclePosition.left &&
+                        left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
+
+            return isColliding
+
+        }
+    },
+
+
 
     // ---------- [OVERLAP INTERACTIONS] ----------
 
@@ -482,11 +547,24 @@ const Game = {
 
     generateRandomCookiePosition() {
 
+        this.cookieList = [];
+
         for (let i = 0; i < 10; i++) {
 
             const cookie = new Cookie(this.gameScreen, this.gameSize);
 
-            this.cookieList.push(cookie);
+            const isColiding = this.checkCookieOverlap(cookie.cookiePosition.left, cookie.cookiePosition.top, cookie.cookieSize.w, cookie.cookieSize.h)
+            console.log({ isColiding })
+
+            if (isColiding) {
+
+                cookie.cookieElement.remove()
+                i--
+
+            } else {
+
+                this.cookieList.push(cookie);
+            }
 
         }
 
