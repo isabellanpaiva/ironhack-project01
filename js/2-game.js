@@ -209,7 +209,7 @@ const Game = {
 
             this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> Maybe next time... </p>`
 
-        } else if (this.counter <= 2 && this.counter > 10) {
+        } else if (this.counter <= 3 && this.counter < 10) {
 
             this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> I think you can do better </p>`
 
@@ -364,7 +364,6 @@ const Game = {
 
         if (this.obstacleList) {
 
-
             let isColliding = false;
 
             this.obstacleList.forEach(eachObstacle => {
@@ -378,14 +377,14 @@ const Game = {
                         left + w > eachObstacle.obstaclePosition.left &&
                         left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
 
-                    // //checks for obstacle versus snake 
+                    //checks for obstacle versus snake 
 
-                    // || (top + h > this.snake.snakePosition.top &&
-                    //     top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
-                    //     left + w > this.snake.snakePosition.left &&
-                    //     left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
+                    || (top + h > this.snake.snakePosition.top &&
+                        top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                        left + w > this.snake.snakePosition.left &&
+                        left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
 
-                    ////checks for obstacle versus power up
+                    //checks for obstacle versus power up
 
                     || (top + h > this.power.powerPosition.top &&
                         top < this.power.powerPosition.top + this.power.powerSize.h &&
@@ -399,6 +398,18 @@ const Game = {
                 }
 
             })
+
+            this.cookieList.forEach(eachCookie => {
+                if (
+                    (top + h > eachCookie.cookiePosition.top &&
+                        top < eachCookie.cookiePosition.top + eachCookie.cookieSize.h &&
+                        left + w > eachCookie.cookiePosition.left &&
+                        left < eachCookie.cookiePosition.left + eachCookie.cookieSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
 
             return isColliding
 
