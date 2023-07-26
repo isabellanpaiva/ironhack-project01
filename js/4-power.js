@@ -11,6 +11,8 @@ class Power {
         }
 
         this.powerPosition = {
+
+
             left: Math.floor(Math.random() * (this.gameSize.w - this.powerSize.w)),
             top: Math.floor(Math.random() * (this.gameSize.h - this.powerSize.h))
         }

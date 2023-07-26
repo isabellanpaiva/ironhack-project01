@@ -42,6 +42,22 @@ const Game = {
 
     },
 
+    playEatPowerMusic() {
+        document.getElementById('eatPower').play();
+        console.log("eatPower played")
+    },
+
+    stopEatPowerMusic() {
+
+        setTimeout(() => {
+            document.getElementById('eatPower').pause()
+            document.getElementById('eatPower').currentTime = 0
+        }, 7000);
+
+        console.log("eatPower stoped")
+
+    },
+
     playGameOverMusic() {
         document.getElementById('gameOver').play();
         console.log("game over played")
@@ -299,6 +315,9 @@ const Game = {
             this.snake.snakePosition.left + this.snake.snakeSize.w > this.power.powerPosition.left &&
             this.snake.snakePosition.left < this.power.powerPosition.left + this.power.powerSize.w
         ) {
+
+            this.playEatPowerMusic()
+            this.stopEatPowerMusic()
 
             this.generateRandomPowerPosition()
             this.increaseCounter()
@@ -657,11 +676,11 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {
+        if (this.counter === 3) {
 
             this.level2()
 
-        } else if (this.counter === 2) {
+        } else if (this.counter === 6) {
 
             this.level3()
         }
