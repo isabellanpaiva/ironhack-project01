@@ -15,6 +15,47 @@ const Game = {
 
     // ---------- [SCREEN SETUP] ----------
 
+    // ---------- [MUSIC SETUP] ----------
+
+    playBackgroundMusic() {
+        document.getElementById('backgroundMusic').play();
+    },
+
+    stopBackgroundMusic() {
+        document.getElementById('backgroundMusic').stop();
+    },
+
+
+    playStageClearMusic() {
+        document.getElementById('stageClear').play();
+    },
+
+    stopStageClearMusic() {
+
+        setTimeout(() => {
+            document.getElementById('stageClear').pause()
+            document.getElementById('stageClear').currentTime = 0
+        }, 7000);
+
+    },
+
+    playGameOverMusic() {
+        document.getElementById('gameOver').play();
+    },
+
+    stopGameOverMusic() {
+
+        setTimeout(() => {
+            document.getElementById('gameOver').pause()
+            document.getElementById('gameOver').currentTime = 0
+        }, 7000);
+
+    },
+
+
+    // ---------- [MUSIC SETUP] ----------
+
+
     // ---------- [OBJECTS SETUP] ----------
 
     counter: 0,
@@ -30,6 +71,12 @@ const Game = {
     cookieList: [],
 
     message: undefined,
+
+    messageDisplayed: true,
+
+    gamePlay: true,
+
+
 
     // ---------- [OBJECTS SETUP] ----------
 
@@ -75,6 +122,10 @@ const Game = {
         this.drawAll()
         this.clearAll()
         window.requestAnimationFrame(() => this.gameLoop())
+
+        if (gamePlay === false) {
+            return
+        }
     },
 
     drawAll() {
@@ -98,32 +149,30 @@ const Game = {
 
     setEventListeners() {
 
-        document.onkeydown = event => {
+        document.onkeydown = (event) => {
 
-            switch (event.code) {
-                case this.keys.UP:
-                    this.snake.moveUp()
-                    break;
+            if (!this.messageDisplayed) {
 
-                case this.keys.DOWN:
-                    this.snake.moveDown()
-                    break;
+                switch (event.code) {
+                    case this.keys.UP:
+                        this.snake.moveUp();
+                        break;
+                    case this.keys.DOWN:
+                        this.snake.moveDown();
+                        break;
+                    case this.keys.LEFT:
+                        this.snake.moveLeft();
+                        break;
+                    case this.keys.RIGHT:
+                        this.snake.moveRight();
+                        break;
+                }
 
-                case this.keys.LEFT:
-                    this.snake.moveLeft()
-                    break;
-
-                case this.keys.RIGHT:
-                    this.snake.moveRight()
-                    break;
-
-                case this.keys.SPACE:
-                    console.log("you pressed space")
-                    this.removeMessage()
-                    break;
-
+            } else if (event.code === this.keys.SPACE) {
+                this.removeMessage();
             }
-        }
+        };
+
     },
 
     // ---------- [KEYBOARD SETUP] ----------
@@ -133,6 +182,8 @@ const Game = {
     // ---------- [GAME OVER SETUP] ----------
 
     gameOverMessage() {
+
+        this.stopMovement()
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
@@ -150,23 +201,24 @@ const Game = {
             window.onload
         }, 300);
 
+        this.playGameOverMusic()
+
+        this.stopGameOverMusic()
+
+        this.gameOver()
+
+
     },
 
-    // gameOver() {
+    gameOver() {
 
-    //     //console.log("game over")
+        gamePlay = false
 
-    //     alert('RETRY')
+        //alert('RETRY')
 
-    //     setTimeout(() => {
+        //this.resetGame()
 
-    //         window.onload
-
-    //     }, 500);
-
-    //     //this.resetGame() 
-
-    // },
+    },
 
     // ---------- [RESET SETUP] ----------
 
@@ -196,6 +248,8 @@ const Game = {
     removeMessage() {
 
         this.message.messageElement.remove()
+
+        this.messageDisplayed = false
     },
 
 
@@ -424,11 +478,11 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 3) {
+        if (this.counter === 1) {
 
             this.level2()
 
-        } else if (this.counter === 6) {
+        } else if (this.counter === 2) {
 
 
             this.level3()
@@ -462,6 +516,11 @@ const Game = {
 
         this.message.messageElement.innerHTML = '<br> <br> <div> Too easy, right? <div> <br> <br> <p> Press space to continue</p>'
 
+        this.playStageClearMusic()
+
+        this.stopStageClearMusic()
+
+        this.messageDisplayed = true
 
     },
 
@@ -489,6 +548,12 @@ const Game = {
         this.message = new Message(this.gameScreen, this.gameSize)
 
         this.message.messageElement.innerHTML = '<br> <br>  <div> Nhommm... cookies  <div> <br> <br> <p> Press space to continue </p>'
+
+        this.playStageClearMusic()
+
+        this.stopStageClearMusic()
+
+        this.messageDisplayed = true
 
     },
 
