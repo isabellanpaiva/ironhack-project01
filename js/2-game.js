@@ -80,6 +80,8 @@ const Game = {
 
     messageDisplayed: true,
 
+    alertDisplayed: false,
+
     gamePlay: true,
 
 
@@ -215,11 +217,11 @@ const Game = {
 
             this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> Not too bad :) </p>`
 
-            setTimeout(() => {
-                this.resetGame()
-            }, 3000);
-
         }
+
+        setTimeout(() => {
+            this.resetGame()
+        }, 1000);
 
     },
 
@@ -232,6 +234,10 @@ const Game = {
     // ---------- [RESET SETUP] ----------
 
     resetGame() {
+
+        if (this.alertDisplayed) {
+            return;
+        }
 
         alert('RETRY');
 
