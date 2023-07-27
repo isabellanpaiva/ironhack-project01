@@ -57,6 +57,8 @@ const Game = {
 
     cookieList: [],
 
+    enemyList: [],
+
     message: undefined,
 
     messageDisplayed: true,
@@ -129,6 +131,8 @@ const Game = {
         this.checkObstacleOverlap()
         this.checkCookieOverlap()
         this.checkPowerOverlap()
+        this.checkEnemyOverlap()
+        this.checkEnemyCollision()
     },
 
     // clearAll() {
@@ -255,6 +259,8 @@ const Game = {
 
         this.cookieList = []
 
+        this.enemyList = []
+
         this.init()
 
     },
@@ -292,6 +298,7 @@ const Game = {
             this.snake.snakePosition.left < 0
         ) {
             this.gameOverMessage()
+            console.log("you died by border collision")
         }
     },
 
@@ -310,6 +317,8 @@ const Game = {
             this.increaseCounter()
             this.increaseLevel()
 
+            console.log("you eat a power")
+
         }
     },
 
@@ -327,6 +336,7 @@ const Game = {
                 ) {
 
                     this.gameOverMessage()
+                    console.log("you died by obstacle collision")
 
                 }
             })
@@ -354,6 +364,8 @@ const Game = {
 
                     this.snake.getBigger()
 
+                    console.log("you eat a cookie")
+
                 }
 
             })
@@ -361,6 +373,28 @@ const Game = {
         }
 
     },
+
+    checkEnemyCollision() {
+
+        if (this.enemyList) {
+
+            this.enemyList.forEach(eachEnemy => {
+
+                if (
+                    this.snake.snakePosition.top + this.snake.snakeSize.h > eachEnemy.enemyPosition.top &&
+                    this.snake.snakePosition.top < eachEnemy.enemyPosition.top + eachEnemy.enemySize.h &&
+                    this.snake.snakePosition.left + this.snake.snakeSize.w > eachEnemy.enemyPosition.left &&
+                    this.snake.snakePosition.left < eachEnemy.enemyPosition.left + eachEnemy.enemySize.w
+                ) {
+
+                    this.gameOverMessage()
+                    console.log("you died by enemy collision")
+
+                }
+            })
+        }
+    },
+
 
     // ---------- [COLLISION INTERACTIONS] ----------
 
@@ -545,6 +579,76 @@ const Game = {
         }
     },
 
+    checkEnemyOverlap(left, top, w, h) {
+
+        if (this.enemyList) {
+
+            let isColliding = false;
+
+            this.enemyList.forEach(eachEnemy => {
+
+                if (
+
+                    //checks for enemy versus enemy
+
+                    (top + h > eachEnemy.enemyPosition.top &&
+                        top < eachEnemy.enemyPosition.top + eachEnemy.enemySize.h &&
+                        left + w > eachEnemy.enemyPosition.left &&
+                        left < eachEnemy.enemyPosition.left + eachEnemy.enemySize.w)
+
+                    //checks for enemy versus snake 
+
+                    || (top + h > this.snake.snakePosition.top &&
+                        top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                        left + w > this.snake.snakePosition.left &&
+                        left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
+
+                    //checks for enemy versus power up
+
+                    || (top + h > this.power.powerPosition.top &&
+                        top < this.power.powerPosition.top + this.power.powerSize.h &&
+                        left + w > this.power.powerPosition.left &&
+                        left < this.power.powerPosition.left + this.power.powerSize.w)
+
+                ) {
+
+                    isColliding = true;
+
+                }
+
+            })
+
+            //checks for enemy versus cookie
+
+            this.cookieList.forEach(eachCookie => {
+                if (
+                    (top + h > eachCookie.cookiePosition.top &&
+                        top < eachCookie.cookiePosition.top + eachCookie.cookieSize.h &&
+                        left + w > eachCookie.cookiePosition.left &&
+                        left < eachCookie.cookiePosition.left + eachCookie.cookieSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
+            //checks for enemy versus obstacle
+
+            this.obstacleList.forEach(eachObstacle => {
+                if (
+                    (top + h > eachObstacle.obstaclePosition.top &&
+                        top < eachObstacle.obstaclePosition.top + eachObstacle.obstacleSize.h &&
+                        left + w > eachObstacle.obstaclePosition.left &&
+                        left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
+                ) {
+                    isColliding = true;
+                }
+            });
+
+            return isColliding
+
+        }
+    },
+
 
     // ---------- [OVERLAP INTERACTIONS] ----------
 
@@ -608,7 +712,7 @@ const Game = {
 
         this.obstacleList = [];
 
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 15; i++) {
 
             let obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
@@ -658,6 +762,36 @@ const Game = {
 
     // ---------- [LEVEL 3 INTERACTIONS] ---------- 
 
+    // ---------- [LEVEL 4 INTERACTIONS] ----------
+
+    generateRandomEnemyPosition() {
+
+        console.log("enemy show up")
+
+        this.enemyList = [];
+
+        for (let i = 0; i < 3; i++) {
+
+            let enemy = new Enemy(this.gameScreen, this.gameSize);
+
+            const isColiding = this.checkEnemyOverlap(enemy.enemyPosition.left, enemy.enemyPosition.top, enemy.enemySize.w, enemy.enemySize.h)
+            console.log({ isColiding })
+
+            if (isColiding) {
+
+                enemy.enemyElement.remove()
+                i--
+
+            } else {
+
+                this.enemyList.push(enemy);
+            }
+        }
+
+    },
+
+    // ---------- [LEVEL 4 INTERACTIONS] ---------- 
+
     // ---------- [LEVEL UP INTERACTIONS] ----------
 
     increaseCounter() {
@@ -670,13 +804,17 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 3) {
+        if (this.counter === 1) {
 
             this.level2()
 
-        } else if (this.counter === 6) {
+        } else if (this.counter === 2) {
 
             this.level3()
+
+        } else if (this.counter === 3) {
+
+            this.level4()
         }
 
     },
@@ -728,6 +866,31 @@ const Game = {
         this.messageDisplayed = true
 
     },
+
+    level4() {
+
+        console.log("you acchieved level 4")
+
+        this.generateRandomEnemyPosition()
+
+        this.stopMovement()
+
+        this.level4Message()
+
+    },
+
+    level4Message() {
+
+        this.message = new Message(this.gameScreen, this.gameSize)
+
+        this.message.messageElement.innerHTML = '<br> <br>  <div> Lets see now! </div> <br> <br> <p> Press space to continue </p>'
+
+        this.playStageClearMusic()
+
+        this.messageDisplayed = true
+
+    },
+
 
     stopMovement() {
 
