@@ -206,7 +206,9 @@ const Game = {
 
         this.playGameOverMusic()
 
-        this.stopMovement()
+        this.stopSnakeMovement()
+
+        this.stopEnemyMovement()
 
         this.messageDisplayed = true
 
@@ -808,17 +810,21 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 3) {
+        if (this.counter === 1) {
 
             this.level2()
 
-        } else if (this.counter === 6) {
+        } else if (this.counter === 2) {
 
             this.level3()
 
-        } else if (this.counter === 9) {
+        } else if (this.counter === 3) {
 
             this.level4()
+
+        } else if (this.counter === 4) {
+
+            this.youWin()
         }
 
     },
@@ -829,7 +835,7 @@ const Game = {
 
         this.generateRandomObstaclePosition()
 
-        this.stopMovement()
+        this.stopSnakeMovement()
 
         this.level2Message()
 
@@ -853,7 +859,7 @@ const Game = {
 
         this.generateRandomCookiePosition()
 
-        this.stopMovement()
+        this.stopSnakeMovement()
 
         this.level3Message()
 
@@ -877,7 +883,7 @@ const Game = {
 
         this.generateRandomEnemyPosition()
 
-        this.stopMovement()
+        this.stopSnakeMovement()
 
         this.level4Message()
 
@@ -895,12 +901,47 @@ const Game = {
 
     },
 
+    youWin() {
 
-    stopMovement() {
+        console.log("you win")
 
-        console.log("movement stopped")
+        this.stopSnakeMovement()
+
+        this.youWinMessage()
+
+    },
+
+    youWinMessage() {
+
+        this.message = new Message(this.gameScreen, this.gameSize)
+
+        this.message.messageElement.innerHTML = '<br> <br>  <div> YOU WIN! </div> <br> <br> <p> Next levels under development </p>'
+
+        this.playStageClearMusic()
+
+        this.messageDisplayed = true
+
+    },
+
+
+
+
+    stopSnakeMovement() {
+
+        console.log("snake movement stopped")
 
         this.snake.snakeSpeed = {
+            left: 0,
+            top: 0
+        }
+
+    },
+
+    stopEnemyMovement() {
+
+        console.log("enemy movement stopped")
+
+        this.enemyList.enemySpeed = {
             left: 0,
             top: 0
         }
