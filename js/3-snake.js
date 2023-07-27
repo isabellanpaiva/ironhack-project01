@@ -120,5 +120,11 @@ class Snake {
 
     // ---------- [UPDATED SIZE CONDITIONS] ---------- 
 
+    // remove() {
+    //     if (this.snakeElement) {
+    //         this.snakeElement.remove();
+    //     }
+    // }
+
 }
 

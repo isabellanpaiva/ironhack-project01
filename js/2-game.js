@@ -17,13 +17,10 @@ const Game = {
 
     // ---------- [MUSIC SETUP] ----------
 
-    // playBackgroundMusic() {
-    //     document.getElementById('backgroundMusic').play();
-    // },
-
-    // stopBackgroundMusic() {
-    //     document.getElementById('backgroundMusic').stop();
-    // },
+    playEatPowerMusic() {
+        document.getElementById('eatPower').play();
+        console.log("eatPower played")
+    },
 
 
     playStageClearMusic() {
@@ -31,14 +28,24 @@ const Game = {
         console.log("stageClear played")
     },
 
-    playEatPowerMusic() {
-        document.getElementById('eatPower').play();
-        console.log("eatPower played")
+    playEnemyTop() {
+        document.getElementById('enemyTop').play();
+        console.log("play enemy top")
+    },
+
+    playEnemyBottom() {
+        document.getElementById('enemyBottom').play();
+        console.log("play enemy bottom")
     },
 
     playGameOverMusic() {
         document.getElementById('gameOver').play();
         console.log("game over played")
+    },
+
+    playYouWinMusic() {
+        document.getElementById('youWin').play();
+        console.log("you win played")
     },
 
 
@@ -62,6 +69,8 @@ const Game = {
     message: undefined,
 
     messageDisplayed: true,
+
+    firstMessage: true,
 
     alertDisplayed: false,
 
@@ -108,7 +117,6 @@ const Game = {
         this.power = new Power(this.gameScreen, this.gameSize)
         this.message = new Message(this.gameScreen, this.gameSize)
         this.messageDisplayed = true
-        //this.enemyList.updateEnemyPosition()
     },
 
     gameLoop() {
@@ -135,7 +143,6 @@ const Game = {
         this.checkEnemyOverlap()
         this.checkEnemyCollision()
         this.enemyList.forEach(enemy => { enemy.moveEnemy() })
-        //this.enemyList.forEach(enemy => { enemy.updateEnemyMove() })
     },
 
     // clearAll() {
@@ -186,6 +193,7 @@ const Game = {
                 }
 
             } else if (event.code === this.keys.SPACE) {
+                console.log("welcome message shows up")
                 this.removeMessage();
             }
         };
@@ -268,6 +276,10 @@ const Game = {
 
         this.init()
 
+        // if (this.snake) {
+        //     this.snake.remove();
+        // }
+
     },
 
     // ---------- [RESET SETUP] ----------
@@ -277,9 +289,16 @@ const Game = {
 
     removeMessage() {
 
-        this.message.messageElement.remove()
+        if (this.message && this.message.messageElement) {
 
-        this.messageDisplayed = false
+            this.message.messageElement.remove()
+            this.messageDisplayed = false
+
+            if (this.firstMessage) {
+                this.instructionsMessage()
+                this.firstMessage = false // avoids that instructions message is shown repeatedly
+            }
+        }
     },
 
 
@@ -423,10 +442,10 @@ const Game = {
                         left + w > eachObstacle.obstaclePosition.left &&
                         left < eachObstacle.obstaclePosition.left + eachObstacle.obstacleSize.w)
 
-                    //checks for obstacle versus snake 
+                    //checks for obstacle versus snake
 
                     || (top + h > this.snake.snakePosition.top &&
-                        top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                        top < this.snake.snakePosition.top + this.snake.snakeSize.h ||
                         left + w > this.snake.snakePosition.left &&
                         left < this.snake.snakePosition.left + this.snake.snakeSize.h.w)
 
@@ -800,6 +819,20 @@ const Game = {
 
     // ---------- [LEVEL UP INTERACTIONS] ----------
 
+    instructionsMessage() {
+
+        console.log("instruction message shows up")
+
+        this.firstMessage = false
+
+        this.messageDisplayed = true
+
+        this.message = new Message(this.gameScreen, this.gameSize)
+
+        this.message.messageElement.innerHTML = '<br> <br>  <h2> Move the snake with arrows. <br> <br> <br> Eat the yellow thing. <br> <br> <br> Survive! </h2> <br> <br> <p> Press space to continue </p>'
+
+    },
+
     increaseCounter() {
 
         this.counter += 1
@@ -810,19 +843,19 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {
+        if (this.counter === 3) {
 
             this.level2()
 
-        } else if (this.counter === 2) {
+        } else if (this.counter === 6) {
 
             this.level3()
 
-        } else if (this.counter === 3) {
+        } else if (this.counter === 9) {
 
             this.level4()
 
-        } else if (this.counter === 4) {
+        } else if (this.counter === 15) {
 
             this.youWin()
         }
@@ -917,7 +950,7 @@ const Game = {
 
         this.message.messageElement.innerHTML = '<br> <br>  <div> YOU WIN! </div> <br> <br> <p> Next levels under development </p>'
 
-        this.playStageClearMusic()
+        this.playYouWinMusic()
 
         this.messageDisplayed = true
 

@@ -52,10 +52,15 @@ class Enemy {
         this.enemyPosition.top += this.enemySpeed.top
 
         if (this.enemyPosition.top >= this.gameSize.h - this.enemySize.h || this.enemyPosition.top < 0) {
+
+            Game.playEnemyTop()
             this.enemySpeed.top *= -1;
+
         }
 
         if (this.enemyPosition.left >= this.gameSize.w - this.enemySize.w || this.enemyPosition.left < 0) {
+
+            Game.playEnemyBottom()
             this.enemySpeed.left *= -1;
         }
 
