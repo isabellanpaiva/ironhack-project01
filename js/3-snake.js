@@ -14,8 +14,8 @@ class Snake {
 
         this.snakePosition = {
 
-            left: 20,
-            top: 20
+            left: 150,
+            top: 150
 
             //left: Math.floor(Math.random() * (this.gameSize.w - this.snakeSize.w)),
             //top: Math.floor(Math.random() * (this.gameSize.h - this.snakeSize.h))

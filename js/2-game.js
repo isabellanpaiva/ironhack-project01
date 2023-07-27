@@ -21,9 +21,9 @@ const Game = {
     //     document.getElementById('backgroundMusic').play();
     // },
 
-    stopBackgroundMusic() {
-        document.getElementById('backgroundMusic').stop();
-    },
+    // stopBackgroundMusic() {
+    //     document.getElementById('backgroundMusic').stop();
+    // },
 
 
     playStageClearMusic() {
@@ -31,47 +31,14 @@ const Game = {
         console.log("stageClear played")
     },
 
-    stopStageClearMusic() {
-
-        setTimeout(() => {
-            document.getElementById('stageClear').pause()
-            document.getElementById('stageClear').currentTime = 0
-        }, 7000);
-
-        console.log("stageClear stoped")
-
-    },
-
     playEatPowerMusic() {
         document.getElementById('eatPower').play();
         console.log("eatPower played")
     },
 
-    stopEatPowerMusic() {
-
-        setTimeout(() => {
-            document.getElementById('eatPower').pause()
-            document.getElementById('eatPower').currentTime = 0
-        }, 7000);
-
-        console.log("eatPower stoped")
-
-    },
-
     playGameOverMusic() {
         document.getElementById('gameOver').play();
         console.log("game over played")
-    },
-
-    stopGameOverMusic() {
-
-        setTimeout(() => {
-            document.getElementById('gameOver').pause()
-            document.getElementById('gameOver').currentTime = 0
-        }, 7000);
-
-        console.log("game over stoped")
-
     },
 
 
@@ -81,8 +48,6 @@ const Game = {
     // ---------- [OBJECTS SETUP] ----------
 
     counter: 0,
-
-    firstStart: true,
 
     snake: undefined,
 
@@ -97,6 +62,8 @@ const Game = {
     messageDisplayed: true,
 
     alertDisplayed: false,
+
+    firstStart: true,
 
     gamePlay: true,
 
@@ -144,10 +111,10 @@ const Game = {
     gameLoop() {
 
         this.drawAll()
-        this.clearAll()
-        window.requestAnimationFrame(() => this.gameLoop())
+        //this.clearAll()
+        window.requestAnimationFrame(() => this.gameLoop()) //improving animation and moving performance
 
-        if (this.gamePlay === false) {
+        if (this.gamePlay === false) { // breaking loop after game ends [CONFIRM]
             return
         }
     },
@@ -159,17 +126,27 @@ const Game = {
         this.checkPowerCollision()
         this.checkObstacleCollision()
         this.checkCookieCollision()
+        this.checkObstacleOverlap()
+        this.checkCookieOverlap()
+        this.checkPowerOverlap()
     },
 
-    clearAll() {
+    // clearAll() {
 
-    },
+    // },
 
     // ---------- [INIT SETUP] ----------
 
     // ---------- [KEYBOARD SETUP] ----------
 
-    keys: { UP: 'KeyW', DOWN: 'KeyS', LEFT: "KeyA", RIGHT: "KeyD", SPACE: "Space" },
+    keys: {
+
+        UP: ['KeyW', 'ArrowUp'],
+        DOWN: ['KeyS', 'ArrowDown'],
+        LEFT: ["KeyA", 'ArrowLeft'],
+        RIGHT: ["KeyD", 'ArrowRight'],
+        SPACE: "Space",
+    },
 
     setEventListeners() {
 
@@ -178,16 +155,25 @@ const Game = {
             if (!this.messageDisplayed) {
 
                 switch (event.code) {
-                    case this.keys.UP:
+
+                    case this.keys.UP[0]:
+                    case this.keys.UP[1]:
+
                         this.snake.moveUp();
                         break;
-                    case this.keys.DOWN:
+
+                    case this.keys.DOWN[0]:
+                    case this.keys.DOWN[1]:
                         this.snake.moveDown();
                         break;
-                    case this.keys.LEFT:
+
+                    case this.keys.LEFT[0]:
+                    case this.keys.LEFT[1]:
                         this.snake.moveLeft();
                         break;
-                    case this.keys.RIGHT:
+
+                    case this.keys.RIGHT[0]:
+                    case this.keys.RIGHT[1]:
                         this.snake.moveRight();
                         break;
                 }
@@ -211,21 +197,19 @@ const Game = {
             return;
         }
 
-        this.messageDisplayed = true,
-
-            this.playGameOverMusic()
-
-        this.stopGameOverMusic()
+        this.playGameOverMusic()
 
         this.stopMovement()
 
+        this.messageDisplayed = true
+
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        if (this.counter <= 2) {
+        if (this.counter <= 3) {
 
             this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> Maybe next time... </p>`
 
-        } else if (this.counter <= 3 && this.counter < 10) {
+        } else if (this.counter <= 3 && this.counter < 6) {
 
             this.message.messageElement.innerHTML = `<br> <br> <br> <div> You did ${this.counter} points. </div> <br> <br> <p> You can do better </p>`
 
@@ -257,9 +241,19 @@ const Game = {
 
         alert('RETRY');
 
+        // after alert is closed >>> clean elements and array  when game restarts
+
+        this.gameScreen.innerHTML = ''
+
         this.counter = 0
 
-        this.gameScreen.innerHTML = '';
+        this.snake = undefined
+
+        this.power = undefined
+
+        this.obstacleList = []
+
+        this.cookieList = []
 
         this.init()
 
@@ -283,26 +277,20 @@ const Game = {
     // ---------------------------- [SETUP] ----------------------------
 
 
+
+
     // ---------------------------- [INTERACTIONS] ----------------------------
 
 
     // ---------- [COLLISION INTERACTIONS] ---------- 
 
     checkBorderCollision() {
-
         if (
             this.snake.snakePosition.top > this.gameSize.h - this.snake.snakeSize.h ||
-            this.snake.snakePosition.top < 0
-        ) {
-            //.console.log("you reached top border")
-            this.gameOverMessage()
-        }
-
-        if (
+            this.snake.snakePosition.top < 0 ||
             this.snake.snakePosition.left >= this.gameSize.w - this.snake.snakeSize.w ||
             this.snake.snakePosition.left < 0
         ) {
-            //console.log("you reached left border")
             this.gameOverMessage()
         }
     },
@@ -317,7 +305,6 @@ const Game = {
         ) {
 
             this.playEatPowerMusic()
-            this.stopEatPowerMusic()
 
             this.generateRandomPowerPosition()
             this.increaseCounter()
@@ -509,23 +496,26 @@ const Game = {
             let isColliding = false;
 
             if (
+
                 //checks for power versus power
+
                 (top + h > this.power.powerPosition.top &&
                     top < this.power.powerPosition.top + this.power.powerSize.h &&
                     left + w > this.power.powerPosition.left &&
                     left < this.power.powerPosition.left + this.power.powerSize.w)
 
-                // //checks for power versus snake 
-                // || (top + h > this.snake.snakePosition.top &&
-                //     top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
-                //     left + w > this.snake.snakePosition.left &&
-                //     left < this.snake.snakePosition.left + this.snake.snakeSize.w)
+                //checks for power versus snake
+                || (top + h > this.snake.snakePosition.top &&
+                    top < this.snake.snakePosition.top + this.snake.snakeSize.h &&
+                    left + w > this.snake.snakePosition.left &&
+                    left < this.snake.snakePosition.left + this.snake.snakeSize.w)
             ) {
                 isColliding = true;
             }
 
 
-            //checks for power versus obstacle 
+            //checks for power versus obstacle
+
             this.obstacleList.forEach(eachObstacle => {
                 if (
                     (top + h > eachObstacle.obstaclePosition.top &&
@@ -538,6 +528,7 @@ const Game = {
             });
 
             //checks for power versus cookie 
+
             this.cookieList.forEach(eachCookie => {
                 if (
                     (top + h > eachCookie.cookiePosition.top &&
@@ -561,24 +552,17 @@ const Game = {
     // ---------- [LEVEL 1 INTERACTIONS] ---------- 
 
 
-    increaseCounter() {
-
-        this.counter += 1
-
-        console.log(this.counter)
-
-    },
-
-
     generateRandomPowerPosition() {
 
-        // Clear the previous power, if it exists
+        // clear the previous power, if it exists
 
         if (this.power && this.power.powerElement) {
             this.power.powerElement.remove();
         }
 
         let power = new Power(this.gameScreen, this.gameSize);
+
+        // seems redundant but it works - future review 
 
         const maxLeft = this.gameSize.w - power.powerSize.w;
         const maxTop = this.gameSize.h - power.powerSize.h;
@@ -592,6 +576,8 @@ const Game = {
         if (isColliding) {
 
             power.powerElement.remove()
+
+            // seems redundant but it works - future review 
 
             const maxLeft = this.gameSize.w - power.powerSize.w;
             const maxTop = this.gameSize.h - power.powerSize.h;
@@ -622,7 +608,7 @@ const Game = {
 
         this.obstacleList = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 30; i++) {
 
             let obstacle = new Obstacle(this.gameScreen, this.gameSize);
 
@@ -674,6 +660,14 @@ const Game = {
 
     // ---------- [LEVEL UP INTERACTIONS] ----------
 
+    increaseCounter() {
+
+        this.counter += 1
+
+        console.log(this.counter)
+
+    },
+
     increaseLevel() {
 
         if (this.counter === 3) {
@@ -691,13 +685,6 @@ const Game = {
 
         console.log("you acchieved level 2")
 
-        this.snake.snakePosition = {
-
-            left: 20,
-            top: 20
-
-        }
-
         this.generateRandomObstaclePosition()
 
         this.stopMovement()
@@ -714,8 +701,6 @@ const Game = {
 
         this.playStageClearMusic()
 
-        //this.stopStageClearMusic()
-
         this.messageDisplayed = true
 
     },
@@ -723,13 +708,6 @@ const Game = {
     level3() {
 
         console.log("you acchieved level 3")
-
-        this.snake.snakePosition = {
-
-            left: 20,
-            top: 20
-
-        }
 
         this.generateRandomCookiePosition()
 
@@ -746,8 +724,6 @@ const Game = {
         this.message.messageElement.innerHTML = '<br> <br>  <div> Nhommm... cookies  <div> <br> <br> <p> Press space to continue </p>'
 
         this.playStageClearMusic()
-
-        //this.stopStageClearMusic()
 
         this.messageDisplayed = true
 
