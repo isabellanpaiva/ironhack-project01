@@ -32,7 +32,7 @@ class Obstacle {
         this.obstacleElement.style.height = `${this.obstacleSize.h}px`
         this.obstacleElement.style.left = `${this.obstaclePosition.left}px`
         this.obstacleElement.style.top = `${this.obstaclePosition.top}px`
-        this.obstacleElement.style.backgroundColor = "red"
+        this.obstacleElement.style.backgroundColor = "orange"
 
         this.gameScreen.appendChild(this.obstacleElement)
 

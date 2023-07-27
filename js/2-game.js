@@ -108,6 +108,7 @@ const Game = {
         this.power = new Power(this.gameScreen, this.gameSize)
         this.message = new Message(this.gameScreen, this.gameSize)
         this.messageDisplayed = true
+        //this.enemyList.updateEnemyPosition()
     },
 
     gameLoop() {
@@ -133,6 +134,8 @@ const Game = {
         this.checkPowerOverlap()
         this.checkEnemyOverlap()
         this.checkEnemyCollision()
+        this.enemyList.forEach(enemy => { enemy.moveEnemy() })
+        //this.enemyList.forEach(enemy => { enemy.updateEnemyMove() })
     },
 
     // clearAll() {
@@ -770,7 +773,7 @@ const Game = {
 
         this.enemyList = [];
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 6; i++) {
 
             let enemy = new Enemy(this.gameScreen, this.gameSize);
 
@@ -785,6 +788,7 @@ const Game = {
             } else {
 
                 this.enemyList.push(enemy);
+                console.log("enemy added to the list")
             }
         }
 
@@ -804,15 +808,15 @@ const Game = {
 
     increaseLevel() {
 
-        if (this.counter === 1) {
+        if (this.counter === 3) {
 
             this.level2()
 
-        } else if (this.counter === 2) {
+        } else if (this.counter === 6) {
 
             this.level3()
 
-        } else if (this.counter === 3) {
+        } else if (this.counter === 9) {
 
             this.level4()
         }
@@ -883,7 +887,7 @@ const Game = {
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        this.message.messageElement.innerHTML = '<br> <br>  <div> Lets see now! </div> <br> <br> <p> Press space to continue </p>'
+        this.message.messageElement.innerHTML = '<br> <br>  <div> Let the games beggin... </div> <br> <br> <p> Press space to continue </p>'
 
         this.playStageClearMusic()
 
