@@ -53,14 +53,14 @@ class Enemy {
 
         if (this.enemyPosition.top >= this.gameSize.h - this.enemySize.h || this.enemyPosition.top < 0) {
 
-            Game.playEnemyTop()
+            Game.playEnemy()
             this.enemySpeed.top *= -1;
 
         }
 
         if (this.enemyPosition.left >= this.gameSize.w - this.enemySize.w || this.enemyPosition.left < 0) {
 
-            Game.playEnemyBottom()
+            Game.playEnemy()
             this.enemySpeed.left *= -1;
         }
 

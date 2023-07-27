@@ -28,15 +28,15 @@ const Game = {
         console.log("stageClear played")
     },
 
-    playEnemyTop() {
-        document.getElementById('enemyTop').play();
-        console.log("play enemy top")
+    playEnemy() {
+        document.getElementById('enemy').play();
+        console.log("play enemy")
     },
 
-    playEnemyBottom() {
-        document.getElementById('enemyBottom').play();
-        console.log("play enemy bottom")
-    },
+    // playEnemyBottom() {
+    //     document.getElementById('enemyBottom').play();
+    //     console.log("play enemy bottom")
+    // },
 
     playGameOverMusic() {
         document.getElementById('gameOver').play();
@@ -829,7 +829,7 @@ const Game = {
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        this.message.messageElement.innerHTML = '<br> <br>  <h2> Move the snake with arrows. <br> <br> <br> Eat the yellow thing. <br> <br> <br> Survive! </h2> <br> <br> <p> Press space to continue </p>'
+        this.message.messageElement.innerHTML = '<br> <br>  <h2> Move the snake with arrows <br> <br> <br> Eat the yellow thing <br> <br> <br> Survive </h2> <br> <br> <p> Press space to continue </p>'
 
     },
 
@@ -855,7 +855,7 @@ const Game = {
 
             this.level4()
 
-        } else if (this.counter === 15) {
+        } else if (this.counter === 18) {
 
             this.youWin()
         }
