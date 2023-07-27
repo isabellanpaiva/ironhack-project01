@@ -948,7 +948,7 @@ const Game = {
 
         this.message = new Message(this.gameScreen, this.gameSize)
 
-        this.message.messageElement.innerHTML = '<br> <br>  <div> YOU WIN! </div> <br> <br> <p> Next levels under development </p>'
+        this.message.messageElement.innerHTML = '<br> <br>  <div> YOU WIN! </div> <br> <br> <p> More levels soon </p>'
 
         this.playYouWinMusic()
 
